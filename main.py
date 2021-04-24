@@ -14,6 +14,7 @@ ws.cell(row = 1, column = 3, value = "Job-title")
 ws.cell(row = 1, column = 4, value = "Telephone")
 ws.cell(row = 1, column = 5, value = "Wechat")
 ws.cell(row = 1, column = 6, value = "Email")
+ws.cell(row = 1, column = 7, value = "LinkedIn")
 
 s = requests.Session()
 s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4464.0 Safari/537.36 Edg/91.0.852.0'})
@@ -69,11 +70,15 @@ def get_user_telephone(json_data: dict):
 
 
 def get_user_wechat(json_data: dict):
-    return json_data.get('wechat', None)
+    return json_data.get('wechat')
 
 
 def get_user_email(json_data: dict):
     return json_data.get('email')
+
+
+def get_user_linkedin(json_data: dict):
+    return json_data.get('linkedin')
 
 
 # collect expo users' ID
@@ -84,7 +89,7 @@ for expo_data in expo_info['data']:
     for x in users_id_data:
         user_id_list.append(x['id'])
 #clear duplicate user_id
-#user_id_list = list(set(user_id_list))    
+#user_id_list = list(set(user_id_list))
 
 # collect User Info with user ID
 row = 2
@@ -96,6 +101,7 @@ for user_id in user_id_list:
     ws.cell(row = row, column = 4, value = get_user_telephone(user_info))
     ws.cell(row = row, column = 5, value = get_user_wechat(user_info))
     ws.cell(row = row, column = 6, value = get_user_email(user_info))
+    ws.cell(row = row, column = 7, value = get_user_linkedin(user_info))
     row += 1
 
 wb.save('user_info.xlsx')
